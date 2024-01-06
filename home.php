@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') :
         $data = decodeToken($matches[1]);
         $userId = (int) $data;
         if (!is_numeric($data)) sendJson(401, 'Invalid User!');
-        $sql = "SELECT `id`,`name`,`email` FROM `users` WHERE `id`='$userId'";
+        $sql = "SELECT `id`,`first_name`,`last_name`,`mobile_number`,`email` FROM `users` WHERE `id`='$userId'";
         $query = mysqli_query($connection, $sql);
         $row = mysqli_fetch_array($query, MYSQLI_ASSOC);
         if ($row === null) sendJson(404, 'User not found!');
