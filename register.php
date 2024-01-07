@@ -10,21 +10,21 @@ require_once __DIR__ . '/sendJson.php';
 require_once __DIR__ . '/jwtHandler.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $data = json_decode(file_get_contents('php://input'));
+    $data = $_POST;
 
     if (
-        !isset($data->first_name) ||
-        !isset($data->last_name) ||
-        !isset($data->email) ||
-        !isset($data->mobile_number) ||
-        !isset($data->password) ||
-        !isset($data->referral_code) ||
-        empty(trim($data->first_name)) ||
-        empty(trim($data->last_name)) ||
-        empty(trim($data->email)) ||
-        empty(trim($data->mobile_number)) ||
-        empty(trim($data->referral_code)) ||
-        empty(trim($data->password))
+        !isset($data['first_name']) ||
+        !isset($data['last_name']) ||
+        !isset($data['email']) ||
+        !isset($data['mobile_number']) ||
+        !isset($data['password']) ||
+        !isset($data['referral_code']) ||
+        empty(trim($data['first_name'])) ||
+        empty(trim($data['last_name'])) ||
+        empty(trim($data['email'])) ||
+        empty(trim($data['mobile_number'])) ||
+        empty(trim($data['password'])) ||
+        empty(trim($data['referral_code']))
     ) {
         sendJson(
             422,
@@ -33,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         );
     }
 
-    $first_name = mysqli_real_escape_string($connection, htmlspecialchars(trim($data->first_name)));
-    $last_name = mysqli_real_escape_string($connection, htmlspecialchars(trim($data->last_name)));
-    $email = mysqli_real_escape_string($connection, trim($data->email));
-    $mobile_number = mysqli_real_escape_string($connection, trim($data->mobile_number));
-    $referral_code = mysqli_real_escape_string($connection, trim($data->referral_code));
-    $password = trim($data->password);
+    $first_name = mysqli_real_escape_string($connection, htmlspecialchars(trim($data['first_name'])));
+    $last_name = mysqli_real_escape_string($connection, htmlspecialchars(trim($data['last_name'])));
+    $email = mysqli_real_escape_string($connection, trim($data['email']));
+    $mobile_number = mysqli_real_escape_string($connection, trim($data['mobile_number']));
+    $referral_code = mysqli_real_escape_string($connection, trim($data['referral_code']));
+    $password = trim($data['password']);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         sendJson(422, 'Invalid Email Address!');
