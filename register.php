@@ -19,11 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         !isset($data['mobile_number']) ||
         !isset($data['password']) ||
         !isset($data['referral_code']) ||
+        !isset($data['mobile_code']) ||
         empty(trim($data['first_name'])) ||
         empty(trim($data['last_name'])) ||
         empty(trim($data['email'])) ||
         empty(trim($data['mobile_number'])) ||
         empty(trim($data['password'])) ||
+        empty(trim($data['mobile_code'])) ||
         empty(trim($data['referral_code']))
     ) {
         sendJson(
@@ -38,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = mysqli_real_escape_string($connection, trim($data['email']));
     $mobile_number = mysqli_real_escape_string($connection, trim($data['mobile_number']));
     $referral_code = mysqli_real_escape_string($connection, trim($data['referral_code']));
+    $mobile_code = mysqli_real_escape_string($connection, trim($data['mobile_code']));
     $password = trim($data['password']);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -58,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Insert user into the database
     $hash_password = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $connection->prepare("INSERT INTO `users`(`first_name`,`last_name`,`email`,`mobile_number`,`referral_code`,`password`) VALUES(?, ?, ?, ?, ?,?)");
-    $stmt->bind_param("ssssss", $first_name, $last_name, $email, $mobile_number, $referral_code, $hash_password);
+    $stmt = $connection->prepare("INSERT INTO `users`(`first_name`,`last_name`,`email`,`mobile_number`,`referral_code`,`mobile_code`,`password`) VALUES(?, ?, ?, ?, ?,?,?)");
+    $stmt->bind_param("sssssss", $first_name, $last_name, $email, $mobile_number, $referral_code,$mobile_code, $hash_password);
     $result = $stmt->execute();
     $stmt->close();
 
